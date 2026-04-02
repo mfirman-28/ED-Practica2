@@ -102,10 +102,12 @@ public class HTML {
             for(int i = 0; i < aux.length; i++){
                 if(esApertura(aux[i])){
                     pila.apilar(aux[i]);
-                }else if(esCierre(aux[i])){
-                    if(!(emparejadas(pila.desapilar(), aux[i]))){
-                        System.out.println("Error en línea" + numLinea + "al leer etiqueta " + aux[i]);
-                        estado = false;
+                }else if(esCierre(aux[i])) {
+                    if (pila.getCima() != null) {
+                        if (!(emparejadas(pila.desapilar(), aux[i]))) {
+                            System.out.println("Error en línea " + numLinea + " al leer etiqueta " + aux[i]);
+                            estado = false;
+                        }
                     }
                 }
             }
@@ -113,16 +115,7 @@ public class HTML {
 
         // Comprobamos si alguna apertura se quedo sin cierre
         if(!(pila.vacia()) && estado){
-
-            String resultado = ""; //+
-            if(!(pila.vacia())) {
-                resultado += pila.desapilar();
-                while (!(pila.vacia())) {
-                    resultado += ", " + pila.desapilar();
-                }
-            }
-
-            System.out.println("Final de fuente inesperado, fuentes sin cierre: " + resultado);
+            System.out.println("Final de fuente inesperado");
             estado = false;
         }
 
