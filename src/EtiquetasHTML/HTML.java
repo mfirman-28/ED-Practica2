@@ -14,8 +14,6 @@ public class HTML {
             System.out.println("Prueba con Pila:");
             if (comprobarHTML(fichero)) {
                 System.out.println("Correcto");
-            }else{
-                System.out.println("Incorrecto");
             }
         }
         fichero.cerrar();
@@ -27,8 +25,6 @@ public class HTML {
             System.out.println("Prueba con Stack:");
             if (comprobarHTMLStack(fichero)) {
                 System.out.println("Correcto");
-            }else{
-                System.out.println("Incorrecto");
             }
         }
         fichero.cerrar();
@@ -103,11 +99,14 @@ public class HTML {
                 if(esApertura(aux[i])){
                     pila.apilar(aux[i]);
                 }else if(esCierre(aux[i])) {
-                    if (pila.getCima() != null) {
+                    if (!(pila.vacia())) {
                         if (!(emparejadas(pila.desapilar(), aux[i]))) {
                             System.out.println("Error en línea " + numLinea + " al leer etiqueta " + aux[i]);
                             estado = false;
                         }
+                    }else{
+                        System.out.println("Error en línea " + numLinea + " al leer etiqueta " + aux[i]);
+                        estado = false;
                     }
                 }
             }
@@ -115,7 +114,13 @@ public class HTML {
 
         // Comprobamos si alguna apertura se quedo sin cierre
         if(!(pila.vacia()) && estado){
-            System.out.println("Final de fuente inesperado");
+            String resultado = "";
+            resultado += pila.desapilar();
+            while(!(pila.vacia())){
+                resultado += ", " + pila.desapilar();
+            }
+            System.out.println("Final de fuente inesperado, aperturas sin cierre: " + resultado);
+
             estado = false;
         }
 
@@ -123,9 +128,43 @@ public class HTML {
     }
 
     public static boolean comprobarHTMLStack(Fichero fichero) {
+        boolean estado = true;
+        String[] aux;
+        Stack<String> pila = new Stack<String>();
+        int numLinea = 0;
 
-        return false;
+        // Comprobamos si los cierres y las ultimas aperturas estan emparejadas
+        while (((aux = fichero.leerLinea()) != null) && estado){
+            numLinea++;
+            for(int i = 0; i < aux.length; i++){
+                if(esApertura(aux[i])){
+                    pila.push(aux[i]);
+                }else if(esCierre(aux[i])) {
+                    if (!(pila.empty())) {
+                        if (!(emparejadas(pila.pop(), aux[i]))) {
+                            System.out.println("Error en línea " + numLinea + " al leer etiqueta " + aux[i]);
+                            estado = false;
+                        }
+                    }else{
+                        System.out.println("Error en línea " + numLinea + " al leer etiqueta " + aux[i]);
+                        estado = false;
+                    }
+                }
+            }
+        }
+
+        // Comprobamos si alguna apertura se quedo sin cierre
+        if(!(pila.empty()) && estado){
+            String resultado = "";
+            resultado += pila.pop();
+            while(!(pila.empty())){
+                resultado += ", " + pila.pop();
+            }
+            System.out.println("Final de fuente inesperado, aperturas sin cierre: " + resultado);
+
+            estado = false;
+        }
+
+        return estado;
     }
-
-
 }
