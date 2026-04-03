@@ -22,8 +22,8 @@ public class Lista {
     }
 
     // A�ade un nuevo dato al final de la lista
-    public void insertar(int dato) {
-        Nodo nuevo = new Nodo(dato, null);  // Crear un nodo nuevo
+    public void insertar(Evaluacion ev) {
+        Nodo nuevo = new Nodo(ev, null);  // Crear un nodo nuevo
         if (inicio == null) {  // Insertar el nodo al final de la lista enlazada
             inicio = nuevo;
         } else {
@@ -36,9 +36,9 @@ public class Lista {
 
     // Devuelve el elemento que ocupa una posicion dada.
     // Si no existe la posici�n, devuelve -1
-    public int getElemento(int posicion) {
+    public Evaluacion getElemento(int posicion) {
         if (posicion < 0 || posicion >= numElementos) {
-            return -1;
+            return null;
         } else {
             // Avanzar en la lista enlazada tantos nodos como indique posicion
             Nodo actual = inicio;
@@ -51,7 +51,7 @@ public class Lista {
 
     // Almacena elemento en la posicion indicada por posicion
     // Si la posici�n es incorrecta, devuelve false
-    public boolean setElemento(int dato, int posicion) {
+    public boolean setElemento(Evaluacion ev, int posicion) {
         if (posicion < 0 || posicion >= numElementos) {
             return false;
         } else {
@@ -59,16 +59,16 @@ public class Lista {
             for (int i = 0; i < posicion; i++) {
                 actual = actual.getSiguiente();
             }
-            actual.setDato(dato);
+            actual.setDato(ev);
             return true;
         }
     }
 
     // Borra la primera ocurrencia del parámetro dato (si existe)
-    public boolean borrar(int dato) {
+    public boolean borrar(Evaluacion ev) { // ¿por que no por posiciones? para ello hay quer hacer borrar(getElemento(posicion))
         Nodo actual = inicio;
         Nodo anterior = null;
-        while (actual != null && actual.getDato() != dato) {
+        while (actual != null && actual.getDato() != ev) {
             anterior = actual;
             actual = actual.getSiguiente();
         }
@@ -89,10 +89,10 @@ public class Lista {
     }
 
     // Devuelve la primera posición en la que se encuentra el parámetro dato (si existe)
-    public int posicion(int dato) {
+    public int posicion(Evaluacion ev) {
         Nodo actual = inicio;
         int posicion = 0;
-        while (actual != null && actual.getDato() != dato) {
+        while (actual != null && actual.getDato() != ev) {
             actual = actual.getSiguiente();
             posicion++;
         }
@@ -104,8 +104,8 @@ public class Lista {
     }
 
     // Determina si el parámetro dato existe en la lista.
-    public boolean contiene(int dato) {
-        return this.posicion(dato) >= 0;
+    public boolean contiene(Evaluacion ev) {
+        return this.posicion(ev) >= 0;
     }
 
     // Devuelve el número de elementos que tiene la lista
