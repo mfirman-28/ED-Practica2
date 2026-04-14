@@ -35,21 +35,29 @@ public class Alumno {
 	public boolean nuevaEvaluacion(Evaluacion evaluacion) {
 		Iterador iterador = expediente.getIterador();
 		boolean estado = false;
+		boolean iguales = false;
 
-		if(expediente != null) {
+		if(expediente.getNumElementos() != 0) {
 			while (iterador.hasNext()) {
 				Evaluacion evaluacionAlumno = iterador.next();
-				if (evaluacionAlumno.mismaEvaluacion(evaluacion)) { // ¿se puede usar expediente.contiene(evaluacion)?
+
+				if (evaluacionAlumno.mismaEvaluacion(evaluacion)) {
 					if (evaluacionAlumno.getNota() == evaluacion.getNota()) {
 						estado = true; // ¿se puede un return dentro de while?
+						iguales = true;
 					} else {
 						System.out.println("Calificación previamente insertada con nota: " + evaluacionAlumno.getNota());
+						iguales = true;
 					}
-				} else {
-					expediente.insertar(evaluacion);
-					estado = true;
 				}
+
 			}
+
+			if(!iguales){
+				expediente.insertar(evaluacion);
+				estado = true;
+			}
+
 		} else{
 			expediente.insertar(evaluacion);
 			estado = true;
@@ -86,7 +94,7 @@ public class Alumno {
 
 		while(iterador.hasNext()){
 			Evaluacion asignatura = iterador.next();
-			if(this.estaAprobado(asignatura.getNombreAsignatura())){
+			if(asignatura.getNota() >= 5){
 				aprobados.insertar(asignatura);
 			}
 		}
@@ -99,11 +107,11 @@ public class Alumno {
 		double suma = 0;
 		Lista aprobadas = this.asignaturasAprobadas();
 
-		if(aprobadas != null) {
+		if(aprobadas.getNumElementos() > 0) {
 			Iterador iterador = aprobadas.getIterador();
 
 			while (iterador.hasNext()) {
-				suma = +iterador.next().getNota();
+				suma += iterador.next().getNota();
 			}
 
 			media = suma/aprobadas.getNumElementos();
@@ -113,7 +121,7 @@ public class Alumno {
 	}
 
 	public int getNumAprobadas() {
-		if(this.asignaturasAprobadas() != null){
+		if(this.asignaturasAprobadas().getNumElementos() > 0){
 			return this.asignaturasAprobadas().getNumElementos();
 		} else{
 			return 0;
@@ -123,7 +131,7 @@ public class Alumno {
 	public void mostrar() {
 		System.out.println(nombre + ". Matricula: " + matricula);
 
-		if (expediente != null) {
+		if (expediente.getNumElementos() > 0) {
 			Iterador iterador = expediente.getIterador();
 
 			while (iterador.hasNext()) {
@@ -137,7 +145,6 @@ public class Alumno {
 			System.out.println("No ha realizado ninguna evaluación");
 		}
 	}
-
 }
 
 
