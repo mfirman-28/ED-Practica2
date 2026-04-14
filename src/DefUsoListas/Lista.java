@@ -134,7 +134,16 @@ public class Lista {
     }
 
     public int numConvocatorias(String nombreAsignatura) {
-        // TODO
-        return 0; // Eliminar esta líne al codificar el método
+        Nodo actual = inicio;
+        int convocatorias = 0;
+
+        while(actual != null){
+            if(actual.getDato().getNombreAsignatura().equals(nombreAsignatura) && actual.getDato().getNota() >= 0){
+                convocatorias++;
+            }
+            actual = actual.getSiguiente();
+        }
+
+        return convocatorias;
     }
 }

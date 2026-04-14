@@ -10,7 +10,7 @@ public class Iterador {
 
 	public boolean hasNext() {
 		return actual != null;
-	}
+	} // ¿no seria actual.getSiguiente != null?
 
 	public Evaluacion next() {
 		Evaluacion resultado = actual.getDato();
